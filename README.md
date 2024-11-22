@@ -1,6 +1,10 @@
 # StormPic
 "Import" images into Stormworks using paintable signs
 
+Requirements:
+1. Python 3
+2. Python Imaging Library
+
 using the script:
 
 (0. for every 9 pixels in height or width of the image a new block is created, so edit the image according to how big you want it to be in-game using something like gimp beforehand)
