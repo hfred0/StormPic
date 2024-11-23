@@ -3,7 +3,7 @@
 
 Requirements:
 1. Python 3
-2. Python Imaging Library
+2. python pillow
 
 using the script:
 
