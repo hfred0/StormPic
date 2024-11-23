@@ -3,11 +3,12 @@ import sys
 import math
 #using the script:
 #   for every 9 pixels in height or width of the image a new block is created, so edit the image according to how big you want it to be in-game using something like gimp beforehand
-#   place script and desired image in the same folder (optional, makes executing a bit easier)
+#   place script and desired image in a folder (optional, makes executing a bit easier)
 #   execute the script with arg1 being the image file name (with file ending, e.g. .png, .jpg, ...) and arg2 being the background color as a hex value (without the '#' at the beginning if there)
 #   place the output.xml file created in the same folder as the script and image in the stormworks vehicle folder (%appdata%/Stormworks/data/vehicles) and load it from within the game
 # open image to be "imported", set color for pixels outside image bounds/fully tranparent pixels, create output xml
 image = Image.open(sys.argv[1])
+image = image.convert('RGBA')
 background = sys.argv[2]
 output = open("output.xml", "w")
 #ouputs hex string usable in the save file
@@ -36,8 +37,16 @@ def setImage():
                 temp = background
             else:
                 color = image.getpixel((w, image.size[1] - h - 1))
-                if color[3] != 0:
+                if color[3] == 255:
                     temp = '%02x%02x%02x' % (color[0], color[1], color[2])
+                elif color[3] != 0:
+                    ratio = color[3] / 255
+                    tempColor = list(color)
+                    for i in range(3):
+                        tempColor[i] = int(tempColor[i] * ratio + int(background[2*i:(2*i)+2],16) * (1 - ratio))
+                    tempColor.remove(color[3])
+                    tempColor = tuple(tempColor)
+                    temp = '%02x%02x%02x' % tempColor
                 else:
                     temp = background
             colors.append(temp)
